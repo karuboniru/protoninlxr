@@ -12,7 +12,7 @@ EventAction::EventAction(RunAction* runAction, HistoManager* his)
   fRunAction(runAction),
   len(0.),
   hist(his),
-  mnel(true)
+  mnel(0)
 {} 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -25,6 +25,7 @@ EventAction::~EventAction()
 void EventAction::BeginOfEventAction(const G4Event*)
 {    
   len = 0.;
+  mnel = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
