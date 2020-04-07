@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.icc": "cpp",
+        "cids": "cpp",
+        "*.tcc": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "string": "cpp"
+    }
+}
