@@ -26,6 +26,8 @@ void EventAction::BeginOfEventAction(const G4Event*)
 {    
   len = 0.;
   mnel = 0.;
+  countel = 0; 
+  countnel = 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -33,7 +35,7 @@ void EventAction::BeginOfEventAction(const G4Event*)
 void EventAction::EndOfEventAction(const G4Event*)
 {
   //fill my Ntuple
-  hist->FillNtuple(len, mnel);
+  hist->FillNtuple(len, mnel, countel, countnel);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

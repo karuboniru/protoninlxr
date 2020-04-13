@@ -36,7 +36,8 @@ void HistoManager::Book()
     analysisManager->CreateNtuple("Ntuple1", "123");
     analysisManager->CreateNtupleDColumn(0, "Depth"); // column Id = 0
     analysisManager->CreateNtupleIColumn(0, "ine");
-    analysisManager->CreateNtupleIColumn(0, "nine");
+    analysisManager->CreateNtupleIColumn(0, "cel");
+    analysisManager->CreateNtupleIColumn(0, "cnel");
     analysisManager->FinishNtuple();
 
     fFactoryOn = true;
@@ -64,13 +65,14 @@ void HistoManager::Save()
     fFactoryOn = false;
 }
 
-void HistoManager::FillNtuple(G4double length, G4bool nel)
+void HistoManager::FillNtuple(G4double length, G4bool nel, G4int cel, G4int cnel)
 {
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
     // Fill 1st ntuple ( id = 0)
     analysisManager->FillNtupleDColumn(0, 0, length/cm);
     analysisManager->FillNtupleIColumn(0, 1, nel);
-    analysisManager->FillNtupleIColumn(0, 2, !nel);
+    analysisManager->FillNtupleIColumn(0, 2, cel);
+    analysisManager->FillNtupleIColumn(0, 3, cnel);
     analysisManager->AddNtupleRow(0);
 }
 
