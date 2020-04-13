@@ -30,16 +30,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
   if (step->GetTrack()->GetTrackID() == 1)
   {
     fEventAction->AddEdep(step->GetTrack()->GetStepLength());
-  }
-  else
-  {
-    if (step->GetTrack()->GetParentID() == 1)
-    {
-      if (step->GetTrack()->GetCreatorProcess()->GetProcessName() == "protonInelastic")
-      {
-        fEventAction->setel(1);
-      }
-    }
+    G4cout << step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
   }
 }
 
