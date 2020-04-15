@@ -21,7 +21,7 @@ HistoManager::~HistoManager()
 void HistoManager::Book()
 {
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-    analysisManager->SetVerboseLevel(2);
+    analysisManager->SetVerboseLevel(0);
     analysisManager->SetNtupleMerging(true);
 
     G4bool fileOpen = analysisManager->OpenFile("RootOut");
