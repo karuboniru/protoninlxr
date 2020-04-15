@@ -19,7 +19,7 @@ class EventAction : public G4UserEventAction
 
     void AddEdep(G4double dlen) { len += dlen; }
     void setel(G4bool nel){mnel = nel;}
-    void addel(G4bool x){countel = x;}
+    void addel(G4bool x){countel += x;}
     void addnel(G4bool x){countnel += x;}
 
   private:

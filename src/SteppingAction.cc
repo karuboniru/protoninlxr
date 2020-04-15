@@ -13,7 +13,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 std::vector<std::string> elasticlist{"CoulombScat", "hadElastic", "msc"};
-std::vector<std::string> inelasticlist{"hIoni", "protonInelastic", "hBrems", "hPairProd"};
+std::vector<std::string> inelasticlist{"protonInelastic", "hBrems", "hPairProd"};
 
 SteppingAction::SteppingAction(EventAction *eventAction)
     : G4UserSteppingAction(),
@@ -48,7 +48,11 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
       {
         fEventAction->addnel(1);
       }
-      if (step->GetPostStepPoint()->GetKineticEnergy() / MeV < 0.01)
+      else
+      {
+        G4cout << "Another: \t" << step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+      }
+      if (step->GetPostStepPoint()->GetKineticEnergy() / MeV < 0.001)
       {
         if (step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName() == "protonInelastic")
           fEventAction->setel(1);

@@ -25,7 +25,7 @@ EventAction::~EventAction()
 void EventAction::BeginOfEventAction(const G4Event*)
 {    
   len = 0.;
-  mnel = 0.;
+  mnel = 0;
   countel = 0; 
   countnel = 0;
 }
