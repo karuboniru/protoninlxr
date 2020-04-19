@@ -35,19 +35,19 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
   if (step->GetTrack()->GetTrackID() == 1)
   {
     fEventAction->AddEdep(step->GetTrack()->GetStepLength());
-    if (step->GetPreStepPoint()->GetProcessDefinedStep() != nullptr)
+    if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr)
     {
-      if (std::any_of(elasticlist.begin(), elasticlist.end(), [&](auto &str) { return str == step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName(); }))
+      if (std::any_of(elasticlist.begin(), elasticlist.end(), [&](auto &str) { return str == step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName(); }))
       {
         fEventAction->addel(1);
       }
-      else if (std::any_of(inelasticlist.begin(), inelasticlist.end(), [&](auto str) { return str == step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName(); }))
+      else if (std::any_of(inelasticlist.begin(), inelasticlist.end(), [&](auto str) { return str == step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName(); }))
       {
         fEventAction->addnel(1);
       }
       else
       {
-        G4cout << "Another: \t" << step->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+        G4cout << "Another: \t" << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
       }
     }
     if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "protonInelastic")
