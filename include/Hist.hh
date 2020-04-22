@@ -12,7 +12,7 @@ public:
   void Book();
   void Save();
 
-  void FillNtuple(G4double, G4bool, G4int, G4int);
+  void FillNtuple(G4double, G4int,G4int,  G4int, G4int);
 
 private:
   G4bool fFactoryOn;

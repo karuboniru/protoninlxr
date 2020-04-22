@@ -10,22 +10,24 @@ class RunAction;
 
 class EventAction : public G4UserEventAction
 {
-  public:
-    EventAction(RunAction* runAction, HistoManager* hist);
-    virtual ~EventAction();
+public:
+  EventAction(RunAction *runAction, HistoManager *hist);
+  virtual ~EventAction();
 
-    virtual void BeginOfEventAction(const G4Event* event);
-    virtual void EndOfEventAction(const G4Event* event);
+  virtual void BeginOfEventAction(const G4Event *event);
+  virtual void EndOfEventAction(const G4Event *event);
 
-    void AddEdep(G4double dlen) { len += dlen; }
-    void setel(G4bool nel){mnel = nel;}
-    void addel(G4bool x){countel += x;}
-    void addnel(G4bool x){countnel += x;}
+  void AddEdep(G4double dlen) { len += dlen; }
+  void setDisppearMode(G4int nel) { disappear_mode = nel; }
+  void trySetStopMode(G4int mode) { stop_mode = (stop_mode == -1 ? mode : stop_mode); }
+  void addel(G4bool x) { countel += x; }
+  void addnel(G4bool x) { countnel += x; }
 
-  private:
-    RunAction* fRunAction;
-    G4double     len;
-    HistoManager* hist;
-    G4int countel, countnel;
-    G4bool mnel ;
+private:
+  RunAction *fRunAction;
+  G4double len;
+  HistoManager *hist;
+  G4int countel, countnel;
+  G4int disappear_mode;
+  G4int stop_mode;
 };

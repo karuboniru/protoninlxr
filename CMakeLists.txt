@@ -16,26 +16,41 @@ else()
   find_package(Geant4 REQUIRED)
 endif()
 
+find_package(ROOT REQUIRED)
+
+#include("${ROOT_DIR}/modules/RootNewMacros.cmake")
+include("${ROOT_USE_FILE}")
+# ROOT version 6 required
+if(ROOT_FOUND)
+  STRING(REGEX MATCH "6.*" VERSION6MATCH ${ROOT_VERSION})
+  if(NOT VERSION6MATCH)
+    message(FATAL_ERROR "CXPD requires ROOT 6")
+  endif()
+endif()
+
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
 # Setup include directory for this project
 #
 include(${Geant4_USE_FILE})
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include 
+                    ${Geant4_INCLUDE_DIR}
+                    ${ROOT_INCLUDE_DIRS})
 
 
-#----------------------------------------------------------------------------
-# Locate sources and headers for this project
-# NB: headers are included so they will show up in IDEs
-#
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
+
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
+add_executable(stack stack.cxx ${sources} ${headers})
+target_link_libraries(stack ${ROOT_LIBRARIES})
 
-#----------------------------------------------------------------------------
-# Add the executable, and link it to the Geant4 libraries
-#
+add_executable(read read.cxx ${sources} ${headers})
+target_link_libraries(read ${ROOT_LIBRARIES})
+
+file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 add_executable(protoninlxr protoninlxr.cc ${sources} ${headers})
 target_link_libraries(protoninlxr ${Geant4_LIBRARIES})
+
+
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we

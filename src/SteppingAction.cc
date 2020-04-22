@@ -7,13 +7,10 @@
 #include "G4RunManager.hh"
 #include "G4LogicalVolume.hh"
 #include "G4SystemOfUnits.hh"
-#include <string>
-#include <vector>
-
+#include "modes.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-std::vector<std::string> elasticlist{"CoulombScat", "hadElastic", "msc"};
-std::vector<std::string> inelasticlist{"hIoni", "protonInelastic", "hBrems", "hPairProd"};
+
 
 SteppingAction::SteppingAction(EventAction *eventAction)
     : G4UserSteppingAction(),
@@ -50,10 +47,24 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
         G4cout << "Another: \t" << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
       }
     }
-    if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "protonInelastic")
+    if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr) //stopped~
     {
-      fEventAction->setel(1);
+      auto mode = std::distance(
+          list.begin(),
+          std::find(
+              list.begin(),
+              list.end(),
+              step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
+      fEventAction->setDisppearMode(mode);
+      if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
+      {
+        fEventAction->trySetStopMode(mode);
+      }
     }
+  }
+  else
+  {
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
   }
 }
 
