@@ -28,9 +28,9 @@ int main(int argc, char **argv)
                        ((argc == 1 ? "disappear_mode" : argv[1]) + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(colors[i]);
+            hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
             hists[hists.size() - 1]->SetFillStyle(1001);
-            hists[hists.size() - 1]->SetFillColorAlpha(colors[i], 0.5);
+            hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
         }
