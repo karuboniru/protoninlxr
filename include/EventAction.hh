@@ -22,6 +22,7 @@ public:
   void trySetStopMode(G4int mode) { stop_mode = (stop_mode == -1 ? mode : stop_mode); }
   void addel(G4bool x) { countel += x; }
   void addnel(G4bool x) { countnel += x; }
+  G4double getlen(){return len;};
 
 private:
   RunAction *fRunAction;

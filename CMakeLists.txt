@@ -46,6 +46,9 @@ target_link_libraries(stack ${ROOT_LIBRARIES})
 add_executable(read read.cxx ${sources} ${headers})
 target_link_libraries(read ${ROOT_LIBRARIES})
 
+add_executable(stepstackmode stepstackmode.cxx ${sources} ${headers})
+target_link_libraries(stepstackmode ${ROOT_LIBRARIES})
+
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 add_executable(protoninlxr protoninlxr.cc ${sources} ${headers})
 target_link_libraries(protoninlxr ${Geant4_LIBRARIES})

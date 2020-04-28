@@ -12,10 +12,11 @@
 
 
 
-SteppingAction::SteppingAction(EventAction *eventAction)
+SteppingAction::SteppingAction(EventAction *eventAction, HistoManager* his)
     : G4UserSteppingAction(),
       fEventAction(eventAction),
-      fScoringVolume(0)
+      fScoringVolume(0),
+      hist(his)
 {
 }
 
@@ -56,6 +57,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
+      hist->RecordStep(fEventAction->getlen(), mode, (step->GetTotalEnergyDeposit()/MeV) / (step->GetTrack()->GetStepLength()/cm));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);

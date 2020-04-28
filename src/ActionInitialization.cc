@@ -28,8 +28,8 @@ void ActionInitialization::Build() const
   RunAction *runAction = new RunAction(histo);
   SetUserAction(runAction);
 
-  EventAction *eventAction = new EventAction(runAction, hist);
+  EventAction *eventAction = new EventAction(runAction, histo);
   SetUserAction(eventAction);
 
-  SetUserAction(new SteppingAction(eventAction));
+  SetUserAction(new SteppingAction(eventAction, histo));
 }
