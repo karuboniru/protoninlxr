@@ -12,7 +12,7 @@ make -j16
 
 # Running
 - Edit `build/run.mac` as needed.
-- In `build` run `./protoninlxr`
+- In `build` run `./protoninlxr run.mac`
 - USE
   - `./stack disappear_mode` to see track length histogram stacked by the way it disappears.
   - `./stack stop_mode` to see track length histogram stacked by the way it stops.
