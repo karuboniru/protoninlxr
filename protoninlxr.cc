@@ -16,12 +16,14 @@
 #include "G4EmStandardPhysics.hh"
 #include "G4EmExtraPhysics.hh"
 
-
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
 
 #include "Randomize.hh"
 #include "Hist.hh"
+
+#include "Randomize.hh"
+#include "time.h"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -54,7 +56,11 @@ int main(int argc, char **argv)
   // physicsList->DumpCutValuesTable();
   physicsList->SetVerboseLevel(2);
   runManager->SetUserInitialization(physicsList);
-
+  //choose the Random engine
+  CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
+  //set random seed with system time
+  G4long seed = time(NULL);
+  CLHEP::HepRandom::setTheSeed(seed);
   // User action initialization
   runManager->SetUserInitialization(new ActionInitialization());
 

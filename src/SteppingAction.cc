@@ -55,7 +55,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(fEventAction->getlen(), mode, (step->GetTotalEnergyDeposit() / MeV) / (step->GetTrack()->GetStepLength() / cm), (step->GetTotalEnergyDeposit() / MeV));
+      hist->RecordStep(fEventAction->getlen(), mode, ((step->GetPreStepPoint()->GetTotalEnergy()-step->GetPostStepPoint()->GetTotalEnergy()) / MeV) / (step->GetTrack()->GetStepLength() / cm), ((step->GetPreStepPoint()->GetTotalEnergy()-step->GetPostStepPoint()->GetTotalEnergy()) / MeV));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);

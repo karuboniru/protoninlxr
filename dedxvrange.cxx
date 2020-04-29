@@ -20,7 +20,7 @@ double getSumAfterCut(TTree *tree, const std::string &cut, const std::string &va
     TH1D *htemp;
     if ((tree->Draw((variable + ">>htemp").c_str(), cut.c_str(), "gOff")) != 0 && ((htemp = (TH1D *)(gDirectory->Get("htemp"))) != nullptr))
     {
-        auto sum = htemp->GetSumOfWeights();
+        auto sum = htemp->GetMean() * htemp->GetEntries();
         delete htemp;
         return sum;
     }
@@ -53,6 +53,15 @@ std::vector<double> getMeshList(double stop, int points)
     }
     return bins;
 }
+int getcount(TFile *file)
+{
+    TTree *Tree = nullptr;
+    file->GetObject("Ntuple1", Tree);
+    auto count = Tree->Draw("Depth", "", "gOff");
+    delete Tree;
+    return count;
+}
+
 int main(int argc, char **argv)
 {
     auto app = new TApplication("app", &argc, argv);
@@ -63,11 +72,12 @@ int main(int argc, char **argv)
     _file0->GetObject("process", Tree);
     std::vector<TH1D *> hists;
     auto c1 = new TCanvas();
-    gStyle->SetOptStat(0);
-    constexpr int ranges = 40;
+    auto count = getcount(_file0);
+    constexpr int ranges = 100;
     double step = 0;
     auto bins = getMeshList(step = getEdgeOfTree(Tree, "Depth"), ranges);
     step /= ranges;
+    double sum = 0;
     for (long unsigned int mode = 0; mode < list.size(); mode++)
     {
         if (Tree->Draw("Depth", (std::string("process==") + std::to_string(mode)).c_str(), "gOff") == 0)
@@ -75,7 +85,7 @@ int main(int argc, char **argv)
         hists.push_back(new TH1D(list[mode].c_str(), list[mode].c_str(), ranges, &bins[0]));
         for (int i = 0; i < ranges; i++)
         {
-            auto dedx = getSumAfterCut(Tree, "Depth>" + std::to_string(bins[i]) + "&&Depth <" + std::to_string(bins[i + 1]) + "&&process==" + std::to_string(mode), "de") / step;
+            auto dedx = getSumAfterCut(Tree, "Depth>=" + std::to_string(bins[i]) + "&&Depth <" + std::to_string(bins[i + 1]) + "&&process==" + std::to_string(mode), "de") / count;
             hists[hists.size() - 1]->AddBinContent(i, dedx);
         }
         hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
@@ -83,17 +93,20 @@ int main(int argc, char **argv)
         hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
         hists[hists.size() - 1]->SetTitle(list[mode].c_str());
         leg->AddEntry(hists[hists.size() - 1], list[mode].c_str());
+        sum += hists[hists.size() - 1]->Integral();
     }
+    std::cout << sum << std::endl;
     int max = 0;
     for (auto &i : hists)
     {
         // std::cout<< i->GetMaximum() <<std::endl;
         max = max > i->GetMaximum() ? max : i->GetMaximum();
-        hs->SetMaximum(max);
+        hs->SetMaximum(2.0 * max);
         hs->Add(i);
     }
     hs->SetTitle((std::string("Stack by ") + "step process").c_str());
     hs->Draw("");
+
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
     leg->Draw();
     c1->Draw();
