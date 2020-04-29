@@ -10,9 +10,7 @@
 #include "modes.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
-
-SteppingAction::SteppingAction(EventAction *eventAction, HistoManager* his)
+SteppingAction::SteppingAction(EventAction *eventAction, HistoManager *his)
     : G4UserSteppingAction(),
       fEventAction(eventAction),
       fScoringVolume(0),
@@ -57,7 +55,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(fEventAction->getlen(), mode, (step->GetTotalEnergyDeposit()/MeV) / (step->GetTrack()->GetStepLength()/cm));
+      hist->RecordStep(fEventAction->getlen(), mode, (step->GetTotalEnergyDeposit() / MeV) / (step->GetTrack()->GetStepLength() / cm), (step->GetTotalEnergyDeposit() / MeV));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);

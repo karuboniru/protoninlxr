@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         hs->Add(i);
     }
     hs->SetTitle((std::string("Stack by ") + "step process").c_str());
-    hs->Draw("");
+    hs->Draw("NOSTACK");
     leg->Draw();
     c1->Draw();
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
