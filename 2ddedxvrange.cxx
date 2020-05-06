@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     // std::vector<TPaveStats *> tphs;
     auto c1 = new TCanvas();
     gStyle->SetOptStat(0);
-    for (long unsigned int i = 0; i < list.size(); i++)
+    for (long unsigned int i = 1; i < list.size(); i++)
     {
         if (Tree->Draw(("dedx:Depth>>hist" + std::to_string(i)).c_str(),
                        ((argc == 1 ? "process" : argv[1]) + std::string("==") + std::to_string(i)).c_str()) != 0)
@@ -38,6 +38,7 @@ int main(int argc, char **argv)
             hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
             hists[hists.size() - 1]->SetFillStyle(1001);
             hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
+            hists[hists.size() - 1]->SetMarkerColor(colors[hists.size() - 1]);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
@@ -50,11 +51,11 @@ int main(int argc, char **argv)
             // std::cout<< i->GetMaximum() <<std::endl;
             max = max > i->GetMaximum() ? max : i->GetMaximum();
             hs->SetMaximum(max);
-            hs->Add(i, "SCAT");
+            hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "process" : argv[1]) + ";depth(cm);Count").c_str());
-    hs->Draw("SCAT");
+    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "process" : argv[1]) + ";depth(cm);dedx(MeV/cm, per record)").c_str());
+    hs->Draw("0lego1");
 
     leg->Draw();
     c1->Draw();

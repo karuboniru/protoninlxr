@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         hists.push_back(new TH1D(list[mode].c_str(), list[mode].c_str(), ranges, &bins[0]));
         for (int i = 0; i < ranges; i++)
         {
-            auto dedx = getSumAfterCut(Tree, "Depth>=" + std::to_string(bins[i]) + "&&Depth <" + std::to_string(bins[i + 1]) + "&&process==" + std::to_string(mode), "de") / count;
+            auto dedx = getSumAfterCut(Tree, "Depth>=" + std::to_string(bins[i]) + "&&Depth <" + std::to_string(bins[i + 1]) + "&&process==" + std::to_string(mode), "de") / step / count;
             hists[hists.size() - 1]->AddBinContent(i, dedx);
         }
         hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
@@ -104,9 +104,8 @@ int main(int argc, char **argv)
         hs->SetMaximum(2.0 * max);
         hs->Add(i);
     }
-    hs->SetTitle((std::string("Stack by ") + "step process").c_str());
     hs->Draw("");
-
+    hs->SetTitle("dedv vs. pos; pos at length(cm); dedx(MeV/cm)");
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
     leg->Draw();
     c1->Draw();

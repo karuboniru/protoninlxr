@@ -46,7 +46,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
         G4cout << "Another: \t" << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
       }
     }
-    if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr) //stopped~
+    // if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr) //stopped~
     {
       auto mode = std::distance(
           list.begin(),
@@ -55,7 +55,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(fEventAction->getlen(), mode, ((step->GetPreStepPoint()->GetTotalEnergy()-step->GetPostStepPoint()->GetTotalEnergy()) / MeV) / (step->GetTrack()->GetStepLength() / cm), ((step->GetPreStepPoint()->GetTotalEnergy()-step->GetPostStepPoint()->GetTotalEnergy()) / MeV));
+      hist->RecordStep(fEventAction->getlen(), mode, ((step->GetPreStepPoint()->GetKineticEnergy()-step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetTrack()->GetStepLength() / cm), ((step->GetPreStepPoint()->GetKineticEnergy()-step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);

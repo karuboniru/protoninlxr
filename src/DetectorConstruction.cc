@@ -61,7 +61,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   auto env_mat = nist->FindOrBuildMaterial("G4_lAr");
   // Envelope parameters
   //
-  G4double env_sizeXY = 20*m, env_sizeZ = 20*m;
+  G4double env_sizeXY = 100*m, env_sizeZ = 100*m;
 
   G4bool checkOverlaps = true;
 

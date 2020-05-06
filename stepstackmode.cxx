@@ -22,9 +22,10 @@ int main(int argc, char **argv)
     _file0->GetObject("process", Tree);
     std::vector<TH1F *> hists;
     auto c1 = new TCanvas();
+    c1->SetLogy();
     for (long unsigned int i = 0; i < list.size(); i++)
     {
-        if (Tree->Draw(("Depth>>hist" + std::to_string(i)).c_str(),
+        if (Tree->Draw(("dedx>>hist" + std::to_string(i)).c_str(),
                        ("process" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
@@ -43,7 +44,7 @@ int main(int argc, char **argv)
         hs->SetMaximum(max);
         hs->Add(i);
     }
-    hs->SetTitle((std::string("Stack by ") + "step process").c_str());
+    hs->SetTitle((std::string("Stack by ") + "step dedx;dedx(cm);count").c_str());
     hs->Draw("NOSTACK");
     leg->Draw();
     c1->Draw();
