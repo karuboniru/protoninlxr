@@ -105,7 +105,7 @@ int main(int argc, char **argv)
         hs->Add(i);
     }
     hs->Draw("");
-    hs->SetTitle("dedv vs. pos; pos at length(cm); dedx(MeV/cm)");
+    hs->SetTitle("dedv vs. pos; pos at z(cm); dedx(MeV/cm)");
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
     leg->Draw();
     c1->Draw();

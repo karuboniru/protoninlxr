@@ -30,7 +30,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
 {
   if (step->GetTrack()->GetTrackID() == 1)
   {
-    fEventAction->AddEdep(step->GetTrack()->GetStepLength());
+    fEventAction->SetZ(step->GetPostStepPoint()->GetPosition().z());
     if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr)
     {
       if (std::any_of(elasticlist.begin(), elasticlist.end(), [&](auto &str) { return str == step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName(); }))
@@ -55,11 +55,17 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(fEventAction->getlen(), mode, ((step->GetPreStepPoint()->GetKineticEnergy()-step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetTrack()->GetStepLength() / cm), ((step->GetPreStepPoint()->GetKineticEnergy()-step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
+      hist->RecordStep(step->GetPostStepPoint()->GetPosition().z(),
+                       mode,
+                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetStepLength()),
+                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);
       }
+      // G4double dz;
+      // if ((dz=(step->GetPostStepPoint()->GetPosition().z() - step->GetPreStepPoint()->GetPosition().z()))<0)
+      //   G4cout<<"dz<0!\t ="<<dz<< "@ z = "<< fEventAction->getlen()<< G4endl;
     }
   }
   else
