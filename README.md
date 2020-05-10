@@ -18,7 +18,7 @@ make -j16
   - `./stack stop_mode` to see track length histogram stacked by the way it stops.
   - `./read` to see the length distribution of length of ionizing stopped particle.
   - `./stepstackmode` to see stak by every step
-  - `./dedxvrange` to see dedx to range plot(BUGGY)
+  - `./dedxvrange` to see dedx to range plot
 
 # Information
 physics process recording now supports proton, charged pions.
