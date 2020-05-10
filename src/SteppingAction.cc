@@ -8,6 +8,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4SystemOfUnits.hh"
 #include "modes.hh"
+#include "Randomize.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SteppingAction::SteppingAction(EventAction *eventAction, HistoManager *his)
@@ -55,7 +56,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(step->GetPostStepPoint()->GetPosition().z(),
+      hist->RecordStep(step->GetPreStepPoint()->GetPosition().z()+G4UniformRand()*(step->GetPostStepPoint()->GetPosition().z()-step->GetPreStepPoint()->GetPosition().z()),
                        mode,
                        ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetStepLength()),
                        ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
