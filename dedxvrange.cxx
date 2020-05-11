@@ -17,11 +17,11 @@
 std::vector<int> colors = {632, 416, 600, 400, 616, 432, 800, 820, 840, 860, 880, 900};
 double getSumAfterCut(TTree *tree, const std::string &cut, const std::string &variable)
 {
-    TH1D *htemp;
-    if ((tree->Draw((variable + ">>htemp").c_str(), cut.c_str(), "gOff")) != 0 && ((htemp = (TH1D *)(gDirectory->Get("htemp"))) != nullptr))
+    TH1D *temp_hist;
+    if ((tree->Draw((variable + ">>temp_hist").c_str(), cut.c_str(), "gOff")) != 0 && ((temp_hist = (TH1D *)(gDirectory->Get("temp_hist"))) != nullptr))
     {
-        auto sum = htemp->GetMean() * htemp->GetEntries();
-        delete htemp;
+        auto sum = temp_hist->GetMean() * temp_hist->GetEntries();
+        delete temp_hist;
         return sum;
     }
     else
@@ -32,13 +32,13 @@ double getSumAfterCut(TTree *tree, const std::string &cut, const std::string &va
 
 double getEdgeOfTree(TTree *tree, const std::string &variable)
 {
-    TH1D *htemp;
-    if ((tree->Draw((variable + ">>htemp").c_str(), "", "gOff")) != 0 && (htemp = (TH1D *)(gDirectory->Get("htemp"))) != nullptr)
+    TH1D *temp_hist;
+    if ((tree->Draw((variable + ">>temp_hist").c_str(), "", "gOff")) != 0 && (temp_hist = (TH1D *)(gDirectory->Get("temp_hist"))) != nullptr)
     {
-        htemp = (TH1D *)(gDirectory->Get("htemp"));
-        auto axis = htemp->GetXaxis();
+        temp_hist = (TH1D *)(gDirectory->Get("temp_hist"));
+        auto axis = temp_hist->GetXaxis();
         auto max = axis->GetXmax();
-        delete htemp;
+        delete temp_hist;
         return max;
     }
     else
