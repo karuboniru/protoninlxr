@@ -55,6 +55,12 @@ target_link_libraries(dedxvrange ${ROOT_LIBRARIES})
 add_executable(2ddedxvrange 2ddedxvrange.cxx ${sources} ${headers})
 target_link_libraries(2ddedxvrange ${ROOT_LIBRARIES})
 
+add_executable(stack_ending stack_ending.cxx ${sources} ${headers})
+target_link_libraries(stack_ending ${ROOT_LIBRARIES})
+
+add_executable(stack_ending_dedx stack_ending_dedx.cxx ${sources} ${headers})
+target_link_libraries(stack_ending_dedx ${ROOT_LIBRARIES})
+
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 add_executable(protoninlxr protoninlxr.cc ${sources} ${headers})
 target_link_libraries(protoninlxr ${Geant4_LIBRARIES})

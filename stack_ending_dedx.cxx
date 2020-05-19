@@ -1,10 +1,8 @@
-#include <TROOT.h>
-#include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
 #include <TApplication.h>
 #include <TTree.h>
-#include <TH2D.h>
+#include <TH1F.h>
 #include <THStack.h>
 #include <TFile.h>
 #include <TLegend.h>
@@ -23,22 +21,22 @@ int main(int argc, char **argv)
     auto _file0 = new TFile("RootOut.root");
     TTree *Tree = nullptr;
     auto leg = new TLegend(.05, .82, .25, .95);
-    auto hs = new THStack("hs", (std::string("Stack by ") + (argc == 1 ? "process" : argv[1])).c_str());
+    auto hs = new THStack("hs", (std::string("Stack by ") + "process").c_str());
     _file0->GetObject("ending", Tree);
-    std::vector<TH2D *> hists;
+    std::vector<TH1F *> hists;
     // std::vector<TPaveStats *> tphs;
     auto c1 = new TCanvas();
-    gStyle->SetOptStat(0);
-    for (long unsigned int i = 0; i < list.size(); i++)
+    // c1->SetLogy();
+    // c1->SetLogx();
+    for (long unsigned int i = 1; i < list.size(); i++)
     {
-        if (Tree->Draw(("dedx:range>>hist" + std::to_string(i)).c_str(),
-                       ((argc == 1 ? "process" : argv[1]) + std::string("==") + std::to_string(i)).c_str(), "gOff") != 0)
+        if (Tree->Draw(("dedx>>hist"+ std::to_string(i)).c_str(),
+                       ("process" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
-            hists.push_back((TH2D *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
+            hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
             hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
             hists[hists.size() - 1]->SetFillStyle(1001);
             hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
-            hists[hists.size() - 1]->SetMarkerColor(colors[hists.size() - 1]);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
@@ -54,9 +52,19 @@ int main(int argc, char **argv)
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "process" : argv[1]) + ";depth(cm);dedx(MeV/cm)").c_str());
-    hs->Draw("0lego1 nostack");
+    hs->SetTitle((std::string("Stack by ") + "process" + ";dedx(MeV/cm);Count").c_str());
+    hs->Draw("NOSTACK");
 
+    {
+        double i = 0;
+        for (auto &hist : hists)
+        {
+            double s[4] = {0};
+            hist->GetStats(s);
+            i += s[0];
+        }
+        std::cout << "Total Found\t" << i << std::endl;
+    }
     leg->Draw();
     c1->Draw();
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");

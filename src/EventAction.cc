@@ -39,6 +39,10 @@ void EventAction::BeginOfEventAction(const G4Event *)
 void EventAction::EndOfEventAction(const G4Event *)
 {
   //fill my Ntuple
+  if(len<0){
+    G4cout<<"Wrong"<<"z = "<< len<<G4endl;
+    return;
+  }
   hist->FillNtuple(len, disappear_mode, stop_mode, countel, countnel);
 }
 

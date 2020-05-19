@@ -58,8 +58,8 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
       fEventAction->setDisppearMode(mode);
       hist->RecordStep(step->GetPreStepPoint()->GetPosition().z()+G4UniformRand()*(step->GetPostStepPoint()->GetPosition().z()-step->GetPreStepPoint()->GetPosition().z()),
                        mode,
-                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetStepLength()),
-                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
+                       ((step->GetPreStepPoint()->GetTotalEnergy() - step->GetPostStepPoint()->GetTotalEnergy()) / MeV) / (step->GetStepLength()),
+                       ((step->GetPreStepPoint()->GetTotalEnergy() - step->GetPostStepPoint()->GetTotalEnergy()) / MeV));
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0)
       {
         fEventAction->trySetStopMode(mode);
