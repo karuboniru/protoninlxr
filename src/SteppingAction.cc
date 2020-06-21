@@ -59,10 +59,10 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
         G4cout<< step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << "not recorded"<<G4endl;
       }
       fEventAction->setDisppearMode(mode);
-      hist->RecordStep(step->GetPreStepPoint()->GetPosition().z()+G4UniformRand()*(step->GetPostStepPoint()->GetPosition().z()-step->GetPreStepPoint()->GetPosition().z()),
+      hist->RecordStep((step->GetPreStepPoint()->GetPosition().z()+G4UniformRand()*(step->GetPostStepPoint()->GetPosition().z()-step->GetPreStepPoint()->GetPosition().z()))/cm,
                        mode,
-                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetStepLength()),
-                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV));
+                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV) / (step->GetStepLength()/cm),
+                       ((step->GetPreStepPoint()->GetKineticEnergy() - step->GetPostStepPoint()->GetKineticEnergy()) / MeV), fEventAction->getEventid());
       if (step->GetPostStepPoint()->GetKineticEnergy() == 0||step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "Decay")
       {
         fEventAction->trySetStopMode(mode);

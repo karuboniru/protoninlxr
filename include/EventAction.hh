@@ -23,6 +23,7 @@ public:
   void addel(G4bool x) { countel += x; }
   void addnel(G4bool x) { countnel += x; }
   G4double getlen() { return len; };
+  G4int getEventid() {return eventid;};
 
 private:
   RunAction *fRunAction;
@@ -31,4 +32,5 @@ private:
   G4int countel, countnel;
   G4int disappear_mode;
   G4int stop_mode;
+  G4int eventid;
 };
