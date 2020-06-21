@@ -17,12 +17,12 @@ public:
   virtual void BeginOfEventAction(const G4Event *event);
   virtual void EndOfEventAction(const G4Event *event);
 
-  void SetZ(G4double z) { len = z; }
+  void SetZ(G4double z) { len = len > z ? len : z; }
   void setDisppearMode(G4int nel) { disappear_mode = nel; }
   void trySetStopMode(G4int mode) { stop_mode = (stop_mode == -1 ? mode : stop_mode); }
   void addel(G4bool x) { countel += x; }
   void addnel(G4bool x) { countnel += x; }
-  G4double getlen(){return len;};
+  G4double getlen() { return len; };
 
 private:
   RunAction *fRunAction;

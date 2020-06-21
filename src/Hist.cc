@@ -38,7 +38,7 @@ void HistoManager::Book()
     analysisManager->CreateNtupleIColumn(0, "stop_mode");
     analysisManager->CreateNtupleIColumn(0, "cel");
     analysisManager->CreateNtupleIColumn(0, "cnel");
-    // analysisManager->CreateNtupleDColumn(0, "enddedx");
+    analysisManager->CreateNtupleDColumn(0, "enddedx");
     analysisManager->FinishNtuple();
     analysisManager->CreateNtuple("process", "per_step");
     analysisManager->CreateNtupleDColumn(1, "Depth");
@@ -85,9 +85,8 @@ void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmo
     analysisManager->FillNtupleIColumn(0, 2, stopmode);
     analysisManager->FillNtupleIColumn(0, 3, cel);
     analysisManager->FillNtupleIColumn(0, 4, cnel);
-    // analysisManager->FillNtupleDColumn(0, 5, getEndDedx());
+    analysisManager->FillNtupleDColumn(0, 5, getEndDedx());
     analysisManager->AddNtupleRow(0);
-    record_ending_range_de();
 }
 void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double de)
 {
@@ -97,51 +96,29 @@ void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double 
     analysisManager->FillNtupleDColumn(1, 2, dedx);
     analysisManager->FillNtupleDColumn(1, 3, de);
     analysisManager->AddNtupleRow(1);
-    range_de_mode.push_back(std::make_tuple(len / cm, de, mode));
+    range_de.push_back(std::make_tuple(len / cm, de, mode));
 }
 
-std::tuple<G4double, std::vector<G4double>> HistoManager::getEndDedx()
+G4double HistoManager::getEndDedx()
 {
-    const int n = range_de_mode.size();
-    G4double range = std::get<0>(range_de_mode[n - 1]);
-    std::vector<G4double> de;
-    de.resize(list.size());
-    for (auto &i : de)
-    {
-        i = 0;
-    }
+    const int n = range_de.size();
+    G4double range = std::get<0>(range_de[n - 1]);
+    G4double de = 0;
     for (int i = n - 1; i >= 0; i--)
     {
-        if (std::get<0>(range_de_mode[i]) > 0.9 * range)
+        if (std::get<0>(range_de[i]) > (range - 5>0?range - 5:0))
         {
-            de[std::get<2>(range_de_mode[i])] += std::get<1>(range_de_mode[i]);
+            de += std::get<1>(range_de[i]);
         }
         else
         {
             break;
         }
     }
-    range_de_mode.clear();
-    return make_tuple(range, de);
+    range_de.clear();
+    return de/(range-(range - 5>0?range - 5:0));
 }
 
-void HistoManager::record_ending_range_de()
-{
-    G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-    const auto t = getEndDedx();
-    const auto de = std::get<1>(t);
-    const auto range = std::get<0>(t);
-    for (int i = 0; i < list.size(); i++)
-    {
-        if (de[i] != 0)
-        {
-            analysisManager->FillNtupleDColumn(2, 0, range);
-            analysisManager->FillNtupleDColumn(2, 1, de[i]/(0.1*range));
-            analysisManager->FillNtupleIColumn(2, 2, i);
-            analysisManager->AddNtupleRow(2);
-        }
-    }
-}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

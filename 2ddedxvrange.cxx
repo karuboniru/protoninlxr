@@ -21,42 +21,67 @@ int main(int argc, char **argv)
 {
     auto app = new TApplication("app", &argc, argv);
     auto _file0 = new TFile("RootOut.root");
+    // auto _file1 = new Tile("pi+.root");
     TTree *Tree = nullptr;
-    auto leg = new TLegend(.05, .82, .25, .95);
-    auto hs = new THStack("hs", (std::string("Stack by ") + (argc == 1 ? "process" : argv[1])).c_str());
-    _file0->GetObject("ending", Tree);
+    // TTree *Tree1 = nullptr;
+    auto leg = new TLegend(.8, .8, .95, .95);
+    auto hs = new THStack("hs", (std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1])).c_str());
+    _file0->GetObject("Ntuple1", Tree);
+    // _file1->GetObject("Ntuple1", Tree1);
     std::vector<TH2D *> hists;
     // std::vector<TPaveStats *> tphs;
     auto c1 = new TCanvas();
+    // c1->SetLogy();
     gStyle->SetOptStat(0);
     for (long unsigned int i = 0; i < list.size(); i++)
     {
-        if (Tree->Draw(("dedx:range>>hist" + std::to_string(i)).c_str(),
-                       ((argc == 1 ? "process" : argv[1]) + std::string("==") + std::to_string(i)).c_str(), "gOff") != 0)
+        if (Tree->Draw(("enddedx:Depth>>hist" + std::to_string(i)).c_str(),
+                       ("enddedx<40&&"+ std::string((argc == 1 ? "stop_mode" : argv[1])) + std::string("==") + std::to_string(i)).c_str(), "gOff") != 0)
         {
             hists.push_back((TH2D *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
+            hists[hists.size() - 1]->SetLineColor(colors[i%colors.size()]);
             hists[hists.size() - 1]->SetFillStyle(1001);
-            hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
-            hists[hists.size() - 1]->SetMarkerColor(colors[hists.size() - 1]);
+            hists[hists.size() - 1]->SetFillColorAlpha(colors[i%5], 0.5);
+            hists[hists.size() - 1]->SetMarkerColor(colors[i%colors.size()]);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
+            // hists[hists.size() - 1]->Scale(1,"width");
+            // hists[hists.size() - 1]->SetBinsLength(1);
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
         }
     }
+    //     for (long unsigned int i = 0; i < list.size(); i++)
+    // {
+    //     if (Tree1->Draw(("enddedx:Depth>>hist" + std::to_string(i)).c_str(),
+    //                    ((argc == 1 ? "stop_mode" : argv[1]) + std::string("==") + std::to_string(i)+"&&enddedx<10").c_str(), "gOff") != 0)
+    //     {
+    //         hists.push_back((TH2D *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
+    //         hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
+    //         hists[hists.size() - 1]->SetFillStyle(1001);
+    //         hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
+    //         hists[hists.size() - 1]->SetMarkerColor(colors[hists.size() - 1]);
+    //         hists[hists.size() - 1]->SetTitle(list[i].c_str());
+    //         leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
+    //         // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
+    //     }
+    // }
     {
-        int max = 0;
+        int max = 0, maxX = 0, maxY = 0;
         for (auto &i : hists)
         {
-            // std::cout<< i->GetMaximum() <<std::endl;
+            i->Scale(1, "width");
+            i->GetXaxis()->SetLimits(0, 80);
+            i->GetYaxis()->SetLimits(0, 40);
+            // i = (TH2D*)(i->Rebin2D());
             max = max > i->GetMaximum() ? max : i->GetMaximum();
             hs->SetMaximum(max);
-            hs->Add(i);
+            hs->Add(i, "");
         }
     }
-    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "process" : argv[1]) + ";depth(cm);dedx(MeV/cm)").c_str());
-    hs->Draw("0lego1 nostack");
-
+    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1]) + ";depth(cm);dedx(MeV/cm)").c_str());
+    hs->Draw("box");
+    hs->GetYaxis()->SetRangeUser(0., 80.);
+    hs->GetYaxis()->SetRangeUser(0., 40.);
     leg->Draw();
     c1->Draw();
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
