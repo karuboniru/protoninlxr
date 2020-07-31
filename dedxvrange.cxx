@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     std::vector<TH1D *> hists;
     auto c1 = new TCanvas();
     auto count = getcount(_file0);
-    constexpr int ranges = 100;
+    constexpr int ranges = 50;
     double step = 0;
     auto bins = getMeshList(step = getEdgeOfTree(Tree, "Depth"), ranges);
     step /= ranges;

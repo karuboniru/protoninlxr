@@ -45,6 +45,8 @@ void HistoManager::Book()
     analysisManager->CreateNtupleIColumn(1, "process");
     analysisManager->CreateNtupleDColumn(1, "dedx");
     analysisManager->CreateNtupleDColumn(1, "de");
+    analysisManager->CreateNtupleDColumn(1, "start");
+    analysisManager->CreateNtupleDColumn(1, "stop");
     analysisManager->FinishNtuple();
     analysisManager->CreateNtuple("ending", "ending_record");
     analysisManager->CreateNtupleDColumn(2, "range");
@@ -88,13 +90,15 @@ void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmo
     analysisManager->FillNtupleDColumn(0, 5, getEndDedx());
     analysisManager->AddNtupleRow(0);
 }
-void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double de)
+void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double de, G4double start, G4double stop)
 {
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
     analysisManager->FillNtupleDColumn(1, 0, len / cm);
     analysisManager->FillNtupleIColumn(1, 1, mode);
     analysisManager->FillNtupleDColumn(1, 2, dedx);
     analysisManager->FillNtupleDColumn(1, 3, de);
+    analysisManager->FillNtupleDColumn(1, 4, start);
+    analysisManager->FillNtupleDColumn(1, 5, stop);
     analysisManager->AddNtupleRow(1);
     range_de.push_back(std::make_tuple(len / cm, de, mode));
 }
