@@ -34,9 +34,9 @@ int main(int argc, char **argv)
                        ("enddedx<40&&stop_mode" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(colors[i%colors.size()]);
+            hists[hists.size() - 1]->SetLineColor(i+1!=10?i+1:11);
             hists[hists.size() - 1]->SetFillStyle(3001);
-            hists[hists.size() - 1]->SetFillColorAlpha(colors[i%colors.size()], 0.5);
+            hists[hists.size() - 1]->SetFillColorAlpha(i+1, 0.5);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
@@ -95,9 +95,9 @@ TCanvas* another()
                        ("stop_mode" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(colors[i%colors.size()]);
+            hists[hists.size() - 1]->SetLineColor(i);
             hists[hists.size() - 1]->SetFillStyle(3001);
-            hists[hists.size() - 1]->SetFillColorAlpha(colors[i%colors.size()], 0.5);
+            hists[hists.size() - 1]->SetFillColorAlpha(i, 0.5);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));

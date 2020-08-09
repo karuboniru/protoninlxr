@@ -88,9 +88,9 @@ int main(int argc, char **argv)
             auto dedx = getSumAfterCut(Tree, "Depth>=" + std::to_string(bins[i]) + "&&Depth <" + std::to_string(bins[i + 1]) + "&&process==" + std::to_string(mode), "de") / step / count;
             hists[hists.size() - 1]->AddBinContent(i, dedx);
         }
-        hists[hists.size() - 1]->SetLineColor(colors[hists.size() - 1]);
+        hists[hists.size() - 1]->SetLineColor(colors[mode%colors.size()]);
         hists[hists.size() - 1]->SetFillStyle(1001);
-        hists[hists.size() - 1]->SetFillColorAlpha(colors[hists.size() - 1], 0.5);
+        hists[hists.size() - 1]->SetFillColorAlpha(colors[mode%colors.size()], 0.5);
         hists[hists.size() - 1]->SetTitle(list[mode].c_str());
         leg->AddEntry(hists[hists.size() - 1], list[mode].c_str());
         sum += hists[hists.size() - 1]->Integral();
