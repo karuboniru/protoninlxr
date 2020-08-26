@@ -22,7 +22,7 @@ void peaks(TH1F *h)
     //Use TSpectrum to find the peak candidates
     TSpectrum *s = new TSpectrum(2 * npeaks);
     Int_t nfound = s->Search(h, 1, "new");
-    printf("Found %d candidate peaks to fitn", nfound);
+    // printf("Found %d candidate peaks to fitn", nfound);
     s->Print();
 }
 
