@@ -2,13 +2,6 @@ find_package(ROOT REQUIRED Spectrum)
 
 #include("${ROOT_DIR}/modules/RootNewMacros.cmake")
 include("${ROOT_USE_FILE}")
-# ROOT version 6 required
-if(ROOT_FOUND)
-  STRING(REGEX MATCH "6.*" VERSION6MATCH ${ROOT_VERSION})
-  if(NOT VERSION6MATCH)
-    message(FATAL_ERROR "CXPD requires ROOT 6")
-  endif()
-endif()
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
@@ -55,3 +48,7 @@ install(TARGETS stack_ending_dedx DESTINATION bin)
 add_executable(getpeak getpeak.cxx ${sources} ${headers})
 target_link_libraries(getpeak ${ROOT_LIBRARIES})
 install(TARGETS getpeak DESTINATION bin)
+
+add_executable(draw draw.cxx ${sources} ${headers})
+target_link_libraries(draw ${ROOT_LIBRARIES})
+install(TARGETS draw DESTINATION bin)

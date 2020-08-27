@@ -39,6 +39,7 @@ set(protoninlxr_SCRIPTS
   init_vis.mac
   run.mac
   vis.mac
+  run.sh
   )
 
 foreach(_script ${protoninlxr_SCRIPTS})
