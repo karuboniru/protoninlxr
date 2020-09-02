@@ -3,12 +3,7 @@ find_package(ROOT REQUIRED Spectrum)
 #include("${ROOT_DIR}/modules/RootNewMacros.cmake")
 include("${ROOT_USE_FILE}")
 
-#----------------------------------------------------------------------------
-# Setup Geant4 include directories and compile definitions
-# Setup include directory for this project
-#
 include_directories(${PROJECT_SOURCE_DIR}/include 
-                    ${Geant4_INCLUDE_DIR}
                     ${ROOT_INCLUDE_DIRS})
 
 
@@ -52,3 +47,7 @@ install(TARGETS getpeak DESTINATION bin)
 add_executable(draw draw.cxx ${sources} ${headers})
 target_link_libraries(draw ${ROOT_LIBRARIES})
 install(TARGETS draw DESTINATION bin)
+
+add_executable(Draw1 Draw1.cxx ${sources} ${headers})
+target_link_libraries(Draw1 ${ROOT_LIBRARIES})
+install(TARGETS Draw1 DESTINATION bin)
