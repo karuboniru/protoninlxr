@@ -24,6 +24,7 @@
 
 #include "Randomize.hh"
 #include "time.h"
+#include <thread>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
 
 #ifdef G4MULTITHREADED
   G4MTRunManager *runManager = new G4MTRunManager;
-  runManager->SetNumberOfThreads(8);
+  runManager->SetNumberOfThreads(std::thread::hardware_concurrency()/2);
 #else
   G4RunManager *runManager = new G4RunManager;
 #endif

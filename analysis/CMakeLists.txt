@@ -51,3 +51,7 @@ install(TARGETS draw DESTINATION bin)
 add_executable(Draw1 Draw1.cxx ${sources} ${headers})
 target_link_libraries(Draw1 ${ROOT_LIBRARIES})
 install(TARGETS Draw1 DESTINATION bin)
+
+add_executable(Draw2 Draw2.cxx ${sources} ${headers})
+target_link_libraries(Draw2 ${ROOT_LIBRARIES})
+install(TARGETS Draw2 DESTINATION bin)

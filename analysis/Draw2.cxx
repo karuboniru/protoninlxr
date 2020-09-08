@@ -14,24 +14,27 @@
 int main(int argc, char **argv)
 {
     auto app = new TApplication("app", &argc, argv);
-    // double energy[] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75 80 85 90};
+    // double energy[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 180, 190, 200, 210, 220, 230};
     std::fstream e_list("./energy_list");
     std::vector<double> energy;
     double e;
-    while(e_list >> e){
+    while (e_list >> e)
+    {
         energy.push_back(e);
     }
     std::vector<std::string> ss = {"proton", "pi+", "pi-"};
     std::vector<TGraphErrors *> grs;
     auto c1 = new TCanvas();
+    c1->SetLogx();
+    c1->SetLogy();
     auto mg = new TMultiGraph("mg", "mg");
-    TLegend leg(.75, .75, .95, .95);
+    TLegend leg(.05, .75, .25, .95);
     for (int i = 0; i < 3; i++)
     {
         const auto s = ss[i];
         std::fstream dep(s + ".depth"), dedx(s + ".dedx");
         std::vector<double> ndep, ndep_s, ndedx, ndedx_s;
-        for (int k = 0; (!(dep.eof() || dedx.eof()))&&k<18;k++)
+        for (int k = 0; (!(dep.eof() || dedx.eof())) && k < 18; k++)
         {
             double x1, x2, x3, x4;
             dep >> x1;
