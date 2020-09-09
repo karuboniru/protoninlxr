@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     std::vector<TGraphErrors *> grs;
     auto c1 = new TCanvas();
     auto mg = new TMultiGraph("mg", "mg");
-    TLegend leg(.75, .75, .95, .95);
+    TLegend leg(.05, .75, .25, .95);
     for (int i = 0; i < 3; i++)
     {
         const auto s = ss[i];
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("end-dedx v. energy;energy(MeV);Depth(MeV/cm)");
+    mg->SetTitle("Depth v. energy plot;energy(MeV);Depth(MeV/cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();

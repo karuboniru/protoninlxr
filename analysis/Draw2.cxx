@@ -56,7 +56,7 @@ int main(int argc, char **argv)
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("end-dedx v. energy;energy(MeV);Depth(MeV/cm)");
+    mg->SetTitle("Depth v. energy plot;energy(MeV);Depth(MeV/cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();
