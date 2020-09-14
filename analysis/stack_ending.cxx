@@ -32,9 +32,9 @@ int main(int argc, char **argv)
                        ("stop_mode" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(i+1);
-            hists[hists.size() - 1]->SetFillStyle(1001);
-            hists[hists.size() - 1]->SetFillColorAlpha(i+1, 0.5);
+            hists[hists.size() - 1]->SetLineColor(i+1!=10?i+1:11);
+            hists[hists.size() - 1]->SetFillStyle(3001);
+            hists[hists.size() - 1]->SetFillColorAlpha(i+1!=10?i+1:11, 0.5);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
             // tphs.push_back((TPaveStats *)(hists[hists.size() - 1]->GetListOfFunctions()->FindObject("stats")));
@@ -54,8 +54,8 @@ int main(int argc, char **argv)
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + "stop_mode" + ";depth(cm);Count").c_str());
-    hs->Draw("NOSTACK");
+    hs->SetTitle((std::string("Stack by ") + "stop_mode" + ";range(cm);Count").c_str());
+    hs->Draw("nostack hist");
 
     {
         double i = 0;

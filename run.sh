@@ -1,8 +1,9 @@
 #!/bin/bash
 for name in proton pi+ pi-
 do
+    rm $name.depth $name.dedx
     sed "s|/gun/particle .*$|/gun/particle $name|g" run.mac -i
-    for i in 10 20 30 40 50 60 70 80 90 100 120 140 180
+    for i in $(cat energy_list)
     do
         echo doing sim for $name  $i
         sed "s|.* MeV$|/gun/energy $i MeV|g" run.mac -i

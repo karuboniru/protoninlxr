@@ -108,9 +108,10 @@ G4double HistoManager::getEndDedx()
     const int n = range_de.size();
     G4double range = std::get<0>(range_de[n - 1]);
     G4double de = 0;
+    G4double end = 0.9 * range;
     for (int i = n - 1; i >= 0; i--)
     {
-        if (std::get<0>(range_de[i]) > (range - 5>0?range - 5:0))
+        if (std::get<0>(range_de[i]) > end)
         {
             de += std::get<1>(range_de[i]);
         }
@@ -120,7 +121,7 @@ G4double HistoManager::getEndDedx()
         }
     }
     range_de.clear();
-    return de/(range-(range - 5>0?range - 5:0));
+    return de / (range - end);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

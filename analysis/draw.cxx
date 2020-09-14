@@ -49,11 +49,12 @@ int main(int argc, char **argv)
         lists.push_back(tg = getGraph(name));
         tg->SetMarkerColor(c = (i++*k));
         tg->SetLineColor(c);
-        tg->SetFillColor(c);
+        // tg->SetFillColor(c);
+        tg->SetMarkerStyle(20+i);
         mg->Add(tg, "PEC");
         leg.AddEntry(tg, name);
     }
-    mg->SetTitle("end-dedx v. depth;depth(cm);end-dedx(MeV/cm)");
+    mg->SetTitle("End-dedx v. Range;Range(cm);End-dedx(MeV/cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();

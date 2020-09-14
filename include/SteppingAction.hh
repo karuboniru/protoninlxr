@@ -15,7 +15,6 @@ class SteppingAction : public G4UserSteppingAction
     SteppingAction(EventAction* eventAction, HistoManager* hist);
     virtual ~SteppingAction();
 
-    // method from the base class
     virtual void UserSteppingAction(const G4Step*);
 
   private:

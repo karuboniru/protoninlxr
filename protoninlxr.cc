@@ -32,6 +32,11 @@ int main(int argc, char **argv)
 {
   // Detect interactive mode (if no arguments) and define UI session
   //
+  //choose the Random engine
+  CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
+  //set random seed with system time
+  G4long seed = time(NULL);
+  CLHEP::HepRandom::setTheSeed(seed);
 
   G4UIExecutive *ui = 0;
   if (argc == 1)
@@ -41,7 +46,7 @@ int main(int argc, char **argv)
 
 #ifdef G4MULTITHREADED
   G4MTRunManager *runManager = new G4MTRunManager;
-  runManager->SetNumberOfThreads(std::thread::hardware_concurrency()/2);
+  runManager->SetNumberOfThreads(std::thread::hardware_concurrency());
 #else
   G4RunManager *runManager = new G4RunManager;
 #endif
@@ -57,11 +62,6 @@ int main(int argc, char **argv)
   // physicsList->DumpCutValuesTable();
   physicsList->SetVerboseLevel(2);
   runManager->SetUserInitialization(physicsList);
-  //choose the Random engine
-  CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
-  //set random seed with system time
-  G4long seed = time(NULL);
-  CLHEP::HepRandom::setTheSeed(seed);
   // User action initialization
   runManager->SetUserInitialization(new ActionInitialization());
 

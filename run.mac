@@ -14,7 +14,7 @@
 
 #
 /gun/particle proton
-/gun/energy 500 MeV
+/gun/energy 100 MeV
 #
 /run/beamOn 10000
 

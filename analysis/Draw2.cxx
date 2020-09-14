@@ -10,6 +10,7 @@
 #include <TMultiGraph.h>
 #include <TLegend.h>
 #include <iostream>
+#include <TF1.h>
 
 int main(int argc, char **argv)
 {
@@ -29,6 +30,7 @@ int main(int argc, char **argv)
     c1->SetLogy();
     auto mg = new TMultiGraph("mg", "mg");
     TLegend leg(.05, .75, .25, .95);
+    auto model = new TF1("name", "[0]*TMath::Power(x,[1])", 0.1, 100);
     for (int i = 0; i < 3; i++)
     {
         const auto s = ss[i];
@@ -51,12 +53,14 @@ int main(int argc, char **argv)
         auto tg = new TGraphErrors(ndep.size(), &energy[0], &ndep[0], nullptr, &ndep_s[0]);
         tg->SetMarkerColor(i * k + 1);
         tg->SetLineColor(i * k + 1);
-        tg->SetFillColor(i * k + 1);
+        tg->SetMarkerStyle(20 + i);
+        std::cout << "<<<<<<<<<<<<<<< Fitting for" << ss[i] << std::endl;
+        tg->Fit(model);
         mg->Add(tg, "PEC");
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("Depth v. energy plot;energy(MeV);Depth(MeV/cm)");
+    mg->SetTitle("Range v. Energy plot;Energy(MeV);Range(cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();

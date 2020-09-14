@@ -48,12 +48,12 @@ int main(int argc, char **argv)
         auto tg = new TGraphErrors(ndep.size(), &energy[0], &ndep[0], nullptr, &ndep_s[0]);
         tg->SetMarkerColor(i * k + 1);
         tg->SetLineColor(i * k + 1);
-        tg->SetFillColor(i * k + 1);
         mg->Add(tg, "PEC");
+        tg->SetMarkerStyle(20+i);
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("Depth v. energy plot;energy(MeV);Depth(MeV/cm)");
+    mg->SetTitle("Range v. Energy plot;Energy(MeV);Range(cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();
