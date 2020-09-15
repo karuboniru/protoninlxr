@@ -50,7 +50,7 @@ int main(int argc, char **argv)
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "disappear_mode" : argv[1]) + ";depth(cm);Count").c_str());
+    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "disappear_mode" : argv[1]) + ";Depth (cm);Count").c_str());
     hs->Draw("NOSTACK");
 
     {

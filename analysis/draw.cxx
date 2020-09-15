@@ -54,7 +54,7 @@ int main(int argc, char **argv)
         mg->Add(tg, "PEC");
         leg.AddEntry(tg, name);
     }
-    mg->SetTitle("End-dedx v. Range;Range(cm);End-dedx(MeV/cm)");
+    mg->SetTitle("End-dedx v. Range;Range (cm);End-de/dx (MeV/cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();

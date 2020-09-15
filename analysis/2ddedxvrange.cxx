@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     auto _file0 = new TFile("RootOut.root");
     TTree *Tree = nullptr;
     auto leg = new TLegend(.8, .8, .95, .95);
-    auto hs = new THStack("hs", (std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1])).c_str());
+    auto hs = new THStack("hs", "hs");
     _file0->GetObject("Ntuple1", Tree);
     std::vector<TH2D *> hists;
     auto c1 = new TCanvas();
@@ -50,11 +50,11 @@ int main(int argc, char **argv)
     {
         for (auto &i : hists)
         {
-            // i->Scale(1, "width");
+            i->Scale(1, "width");
             hs->Add(i, "");
         }
     }
-    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1]) + ";depth(cm);dedx(MeV/cm)").c_str());
+    hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1]) + ";Depth (cm);dedx(MeV/cm)").c_str());
     hs->Draw("box");
     leg->Draw();
     c1->Draw();

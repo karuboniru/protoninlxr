@@ -55,14 +55,16 @@ int main(int argc, char **argv)
         tg->SetLineColor(i * k + 1);
         tg->SetMarkerStyle(20 + i);
         std::cout << "<<<<<<<<<<<<<<< Fitting for" << ss[i] << std::endl;
-        tg->Fit(model);
+        // tg->Fit(model);
         mg->Add(tg, "PEC");
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("Range v. Energy plot;Energy(MeV);Range(cm)");
+    mg->SetTitle("Range v. Energy plot;Energy (MeV);Range (cm)");
     mg->Draw("AP");
     leg.Draw();
+    c1->SetGridx();
+    c1->SetGridy();
     c1->Draw();
     ((TRootCanvas *)c1->GetCanvasImp())->Connect("CloseWindow()", "TApplication", app, "Terminate()");
     app->Run();

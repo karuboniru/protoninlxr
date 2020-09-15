@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     for (long unsigned int i = 0; i < list.size(); i++)
     {
         if (Tree->Draw(("enddedx>>hist"+ std::to_string(i)).c_str(),
-                       ("enddedx<40&&stop_mode" + std::string("==") + std::to_string(i)).c_str()) != 0)
+                       ("enddedx<50&&stop_mode" + std::string("==") + std::to_string(i)).c_str()) != 0)
         {
             hists.push_back((TH1F *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
             hists[hists.size() - 1]->SetLineColor(i+1!=10?i+1:11);
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + "stop_mode" + ";dedx(MeV/cm);Count").c_str());
+    hs->SetTitle("Ending de/dx for different ending process;de/dx (MeV/cm);Count");
     hs->Draw("nostack hist");
 
     {
@@ -114,7 +114,7 @@ TCanvas* another()
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + "stop_mode" + ";dedx(MeV/cm);Count").c_str());
+    hs->SetTitle("Ending de/dx for different ending process;de/dx(MeV/cm);Count");
     hs->Draw("nostack");
 
     {

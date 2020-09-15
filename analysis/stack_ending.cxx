@@ -54,7 +54,7 @@ int main(int argc, char **argv)
             hs->Add(i);
         }
     }
-    hs->SetTitle((std::string("Stack by ") + "stop_mode" + ";range(cm);Count").c_str());
+    hs->SetTitle("Range for different stopping mode;Range (cm);Count");
     hs->Draw("nostack hist");
 
     {

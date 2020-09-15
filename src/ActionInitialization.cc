@@ -15,7 +15,9 @@ ActionInitialization::~ActionInitialization()
 
 void ActionInitialization::BuildForMaster() const
 {
+  // SetUserAction(new PrimaryGeneratorAction);
   HistoManager *histo = new HistoManager();
+
   RunAction *runAction = new RunAction(histo);
   SetUserAction(runAction);
 }

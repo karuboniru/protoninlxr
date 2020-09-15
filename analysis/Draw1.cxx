@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;
     }
-    mg->SetTitle("Range v. Energy plot;Energy(MeV);Range(cm)");
+    mg->SetTitle("Range v. Energy plot;Energy (MeV);Range (cm)");
     mg->Draw("AP");
     leg.Draw();
     c1->Draw();
