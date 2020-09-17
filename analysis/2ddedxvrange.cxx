@@ -27,33 +27,36 @@ int main(int argc, char **argv)
     _file0->GetObject("Ntuple1", Tree);
     std::vector<TH2D *> hists;
     auto c1 = new TCanvas();
-    Tree->Draw("enddedx:Depth>>hist","","box gOff");
+    Tree->Draw("enddedx:Depth>>hist", "", "box gOff");
     auto hist1 = (TH2D *)gDirectory->Get("hist");
     auto max = hist1->GetXaxis()->GetXmax();
     delete hist1;
-    for (long unsigned int i = 0; i < list.size(); i++)
+    for (int i : {1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     {
-        if (Tree->Draw(("enddedx:Depth>>hist" + std::to_string(i)+ "(40,0,"+ std::to_string(max) +",40,0,70)").c_str(),
-                       (std::string((argc == 1 ? "stop_mode" : argv[1])) + std::string("==") + std::to_string(i)).c_str(), "gOff") != 0)
+        int count = 0;
+        if ((count = Tree->Draw(("enddedx:Depth>>hist" + std::to_string(i) + "(50,0," + std::to_string(max) + ",50,0,170)").c_str(),
+                                (std::string((argc == 1 ? "stop_mode" : argv[1])) + std::string("==") + std::to_string(i)).c_str(), "gOff")) != 0)
         {
             hists.push_back((TH2D *)gDirectory->Get(("hist" + std::to_string(i)).c_str()));
-            hists[hists.size() - 1]->SetLineColor(i+1);
+            hists[hists.size() - 1]->SetLineColor(i + 1);
             hists[hists.size() - 1]->SetFillStyle(1001);
-            hists[hists.size() - 1]->SetFillColorAlpha(i+1, 0.5);
-            hists[hists.size() - 1]->SetMarkerColor(i+1);
+            hists[hists.size() - 1]->SetFillColorAlpha(i + 1, 0.5);
+            hists[hists.size() - 1]->SetMarkerColor(i + 1);
             hists[hists.size() - 1]->SetTitle(list[i].c_str());
-            hists[hists.size() - 1]->Scale(1, "width");
             leg->AddEntry(hists[hists.size() - 1], list[i].c_str());
+            // hists[hists.size() - 1]->Scale(1);
+            std::cout << hists[hists.size() - 1]->Integral() << "\t" << count << "\t" << hists[hists.size() - 1]->Integral() / count << std::endl;
+            hs->Add(hists[hists.size() - 1], "");
         }
     }
 
-    {
-        for (auto &i : hists)
-        {
-            i->Scale(1, "width");
-            hs->Add(i, "");
-        }
-    }
+    // {
+    //     for (auto &i : hists)
+    //     {
+    //         i->Scale(1, "width");
+    //         hs->Add(i, "");
+    //     }
+    // }
     hs->SetTitle((std::string("Stack by ") + (argc == 1 ? "stop_mode" : argv[1]) + ";Depth (cm);dedx(MeV/cm)").c_str());
     hs->Draw("box");
     leg->Draw();
