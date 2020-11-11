@@ -33,6 +33,7 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step *step)
 {
+  fEventAction->addIonE(step->GetTotalEnergyDeposit());
   if (step->GetTrack()->GetTrackID() == 1)
   {
     fEventAction->SetZ(step->GetPostStepPoint()->GetPosition().z());
@@ -48,7 +49,7 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
       }
       else
       {
-        G4cout << "Another: \t" << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+        // G4cout << "Another: \t" << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
       }
     }
     // if (step->GetPostStepPoint()->GetProcessDefinedStep() != nullptr) //stopped~
@@ -59,9 +60,9 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
               list.begin(),
               list.end(),
               step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()));
-      if(mode == -1){
-        G4cout<< step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << "not recorded"<<G4endl;
-      }
+      // if(mode == -1){
+      //   G4cout<< step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << "not recorded"<<G4endl;
+      // }
       fEventAction->setDisppearMode(mode);
       auto ran = G4UniformRand();
       hist->RecordStep(step->GetPreStepPoint()->GetPosition().z()+ran*(step->GetPostStepPoint()->GetPosition().z()-step->GetPreStepPoint()->GetPosition().z()),

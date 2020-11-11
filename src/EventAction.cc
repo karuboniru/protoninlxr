@@ -13,7 +13,8 @@ EventAction::EventAction(RunAction *runAction, HistoManager *his)
       len(0.),
       hist(his),
       disappear_mode(0),
-      stop_mode(-1)
+      stop_mode(-1),
+      ionE(0)
 {
 }
 
@@ -32,6 +33,7 @@ void EventAction::BeginOfEventAction(const G4Event *)
   stop_mode = -1;
   countel = 0;
   countnel = 0;
+  ionE=0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -43,7 +45,7 @@ void EventAction::EndOfEventAction(const G4Event *)
     G4cout<<"Wrong"<<"z = "<< len<<G4endl;
     return;
   }
-  hist->FillNtuple(len, disappear_mode, stop_mode, countel, countnel);
+  hist->FillNtuple(len, disappear_mode, stop_mode, countel, countnel, ionE);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

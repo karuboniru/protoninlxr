@@ -55,7 +55,7 @@ int main(int argc, char **argv)
         tg->SetLineColor(i * k + 1);
         tg->SetMarkerStyle(20 + i);
         std::cout << "<<<<<<<<<<<<<<< Fitting for" << ss[i] << std::endl;
-        // tg->Fit(model);
+        // tg->Fit(modCLOCK_MONOTONIC_RAW,el);
         mg->Add(tg, "PEC");
         leg.AddEntry(tg, s.c_str());
         std::cout << ndep.size() << std::endl;

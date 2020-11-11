@@ -39,6 +39,7 @@ void HistoManager::Book()
     analysisManager->CreateNtupleIColumn(0, "cel");
     analysisManager->CreateNtupleIColumn(0, "cnel");
     analysisManager->CreateNtupleDColumn(0, "enddedx");
+    analysisManager->CreateNtupleDColumn(0, "ionE");
     analysisManager->FinishNtuple();
     analysisManager->CreateNtuple("process", "per_step");
     analysisManager->CreateNtupleDColumn(1, "Depth");
@@ -79,7 +80,7 @@ void HistoManager::Save()
     fFactoryOn = false;
 }
 
-void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmode, G4int cel, G4int cnel)
+void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmode, G4int cel, G4int cnel, G4double ionE)
 {
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
     analysisManager->FillNtupleDColumn(0, 0, length / cm);
@@ -88,6 +89,7 @@ void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmo
     analysisManager->FillNtupleIColumn(0, 3, cel);
     analysisManager->FillNtupleIColumn(0, 4, cnel);
     analysisManager->FillNtupleDColumn(0, 5, getEndDedx());
+    analysisManager->FillNtupleDColumn(0, 6, ionE);
     analysisManager->AddNtupleRow(0);
 }
 void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double de, G4double start, G4double stop)

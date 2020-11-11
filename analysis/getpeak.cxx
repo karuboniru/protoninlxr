@@ -66,14 +66,14 @@ int main(int argc, char **argv)
     TTree *Tree = nullptr;
     _file0->GetObject("Ntuple1", Tree);
     Tree->Draw("Depth>>hist_depth",
-               "stop_mode==1", "goff");
+               "stop_mode==1||stop_mode==11", "goff");
     auto hist_depth = (TH1F *)(gDirectory->Get("hist_depth"));
     auto mean_depth = hist_depth->GetMean();
     auto mean_depth_err = hist_depth->GetMeanError();
     auto res_depth = peaks(hist_depth);
 
     Tree->Draw("enddedx>>hist_dedx",
-               "stop_mode==1", "goff");
+               "stop_mode==1||stop_mode==11", "goff");
     auto hist_dedx = (TH1F *)(gDirectory->Get("hist_dedx"));
     auto mean_dedx = hist_dedx->GetMean();
     auto mean_dedx_err = hist_dedx->GetMeanError();
