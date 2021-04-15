@@ -4,8 +4,8 @@
 #include "EventAction.hh"
 #include "SteppingAction.hh"
 
-ActionInitialization::ActionInitialization()
-    : G4VUserActionInitialization()
+ActionInitialization::ActionInitialization(my_iter_t &citer)
+    : G4VUserActionInitialization(), iter(citer)
 {
 }
 
@@ -24,13 +24,13 @@ void ActionInitialization::BuildForMaster() const
 
 void ActionInitialization::Build() const
 {
-  SetUserAction(new PrimaryGeneratorAction);
   HistoManager *histo = new HistoManager();
-
   RunAction *runAction = new RunAction(histo);
   SetUserAction(runAction);
 
   EventAction *eventAction = new EventAction(runAction, histo);
+  SetUserAction(new PrimaryGeneratorAction(eventAction, iter));
+
   SetUserAction(eventAction);
 
   SetUserAction(new SteppingAction(eventAction, histo));

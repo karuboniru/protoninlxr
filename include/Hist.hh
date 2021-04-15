@@ -9,18 +9,15 @@
 class HistoManager
 {
 public:
-  HistoManager();
-  ~HistoManager();
+    HistoManager();
+    ~HistoManager();
 
-  void Book();
-  void Save();
+    void Book();
+    void Save();
 
-  void FillNtuple(G4double, G4int, G4int, G4int, G4int, G4double);
-  void RecordStep(G4double, G4int, G4double, G4double, G4double, G4double);
-  void record_ending_range_de();
-  G4double getEndDedx();
+    void FillNtuple(G4double E_in, G4double E_vis, G4double L_muon, bool isCC);
+    // void SetE_in(G4double E_in);
 
 private:
-  std::vector<std::tuple<G4double, G4double, G4int>> range_de;
-  G4bool fFactoryOn;
+    G4bool fFactoryOn;
 };

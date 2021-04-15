@@ -25,7 +25,7 @@ void HistoManager::Book()
     analysisManager->SetVerboseLevel(0);
     analysisManager->SetNtupleMerging(true);
 
-    G4bool fileOpen = analysisManager->OpenFile("RootOut");
+    G4bool fileOpen = analysisManager->OpenFile("here");
     if (!fileOpen)
     {
         G4cerr << "\n---> HistoManager::Book(): cannot open "
@@ -33,26 +33,10 @@ void HistoManager::Book()
         return;
     }
     analysisManager->CreateNtuple("Ntuple1", "123");
-    analysisManager->CreateNtupleDColumn(0, "Depth"); // column Id = 0
-    analysisManager->CreateNtupleIColumn(0, "disappear_mode");
-    analysisManager->CreateNtupleIColumn(0, "stop_mode");
-    analysisManager->CreateNtupleIColumn(0, "cel");
-    analysisManager->CreateNtupleIColumn(0, "cnel");
-    analysisManager->CreateNtupleDColumn(0, "enddedx");
-    analysisManager->CreateNtupleDColumn(0, "ionE");
-    analysisManager->FinishNtuple();
-    analysisManager->CreateNtuple("process", "per_step");
-    analysisManager->CreateNtupleDColumn(1, "Depth");
-    analysisManager->CreateNtupleIColumn(1, "process");
-    analysisManager->CreateNtupleDColumn(1, "dedx");
-    analysisManager->CreateNtupleDColumn(1, "de");
-    analysisManager->CreateNtupleDColumn(1, "start");
-    analysisManager->CreateNtupleDColumn(1, "stop");
-    analysisManager->FinishNtuple();
-    analysisManager->CreateNtuple("ending", "ending_record");
-    analysisManager->CreateNtupleDColumn(2, "range");
-    analysisManager->CreateNtupleDColumn(2, "dedx");
-    analysisManager->CreateNtupleIColumn(2, "process");
+    analysisManager->CreateNtupleDColumn(0, "E"); // column Id = 0
+    analysisManager->CreateNtupleDColumn(0, "E_vis");
+    analysisManager->CreateNtupleDColumn(0, "len");
+    analysisManager->CreateNtupleIColumn(0, "isCC");
     analysisManager->FinishNtuple();
 
     fFactoryOn = true;
@@ -80,53 +64,18 @@ void HistoManager::Save()
     fFactoryOn = false;
 }
 
-void HistoManager::FillNtuple(G4double length, G4int disappearmode, G4int stopmode, G4int cel, G4int cnel, G4double ionE)
+void HistoManager::FillNtuple(G4double E_in, G4double E_vis, G4double L_muon, bool isCC)
 {
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleDColumn(0, 0, length / cm);
-    analysisManager->FillNtupleIColumn(0, 1, disappearmode);
-    analysisManager->FillNtupleIColumn(0, 2, stopmode);
-    analysisManager->FillNtupleIColumn(0, 3, cel);
-    analysisManager->FillNtupleIColumn(0, 4, cnel);
-    analysisManager->FillNtupleDColumn(0, 5, getEndDedx());
-    analysisManager->FillNtupleDColumn(0, 6, ionE);
+    analysisManager->FillNtupleDColumn(0, 0, E_in/MeV);
+    analysisManager->FillNtupleDColumn(0, 1, E_vis/MeV);
+    analysisManager->FillNtupleDColumn(0, 2, L_muon / m);
+    analysisManager->FillNtupleIColumn(0, 3, isCC);
     analysisManager->AddNtupleRow(0);
 }
-void HistoManager::RecordStep(G4double len, G4int mode, G4double dedx, G4double de, G4double start, G4double stop)
-{
-    G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleDColumn(1, 0, len / cm);
-    analysisManager->FillNtupleIColumn(1, 1, mode);
-    analysisManager->FillNtupleDColumn(1, 2, dedx);
-    analysisManager->FillNtupleDColumn(1, 3, de);
-    analysisManager->FillNtupleDColumn(1, 4, start);
-    analysisManager->FillNtupleDColumn(1, 5, stop);
-    analysisManager->AddNtupleRow(1);
-    range_de.push_back(std::make_tuple(len / cm, de, mode));
-}
 
-G4double HistoManager::getEndDedx()
-{
-    const int n = range_de.size();
-    G4double range = std::get<0>(range_de[n - 1]);
-    G4double de = 0;
-    // G4double end = 0.9 * range;
-    G4double end = range > 5? range - 5: 0;
-    for (int i = n - 1; i >= 0; i--)
-    {
-        if (std::get<0>(range_de[i]) > end)
-        {
-            de += std::get<1>(range_de[i]);
-        }
-        else
-        {
-            break;
-        }
-    }
-    range_de.clear();
-    return de / (range - end);
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// void HistoManager::SetE_in(G4double E_in)
+// {
+//     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+//     analysisManager->FillNtupleDColumn(0, 0, E_in/MeV);
+// }

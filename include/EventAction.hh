@@ -17,20 +17,18 @@ public:
   virtual void BeginOfEventAction(const G4Event *event);
   virtual void EndOfEventAction(const G4Event *event);
 
-  void SetZ(G4double z) { len = len > z ? len : z; }
-  void setDisppearMode(G4int nel) { disappear_mode = nel; }
-  void trySetStopMode(G4int mode) { stop_mode = (stop_mode == -1 ? mode : stop_mode); }
-  void addel(G4bool x) { countel += x; }
-  void addnel(G4bool x) { countnel += x; }
+  void AddL(G4double dl) { len += dl; }
+  void setL(G4double dl) { len = len>dl?len:dl; }
+  void addE(G4double x) { E_vis += x; }
   G4double getlen() { return len; };
-  void addIonE(G4double de) { ionE += de; }
+  void SetENU(double E) { E_nu = E; }
+  void SetCC(bool is) { isCC = is; }
 
 private:
   RunAction *fRunAction;
   G4double len;
+  G4double E_vis;
   HistoManager *hist;
-  G4int countel, countnel;
-  G4int disappear_mode;
-  G4int stop_mode;
-  G4double ionE;
+  G4double E_nu;
+  bool isCC = 0;
 };

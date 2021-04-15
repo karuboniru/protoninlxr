@@ -3,7 +3,9 @@
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
 #include "globals.hh"
-
+#include "Hist.hh"
+#include "EventAction.hh"
+#include "chain_helper.h"
 class G4ParticleGun;
 class G4Event;
 class G4Box;
@@ -16,7 +18,7 @@ class G4Box;
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
-    PrimaryGeneratorAction();    
+    PrimaryGeneratorAction(EventAction *hist, my_iter_t &citer);
     virtual ~PrimaryGeneratorAction();
 
     // method from the base class
@@ -28,4 +30,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   private:
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
     G4Box* fEnvelopeBox;
+    G4ParticleTable *particleTable;
+    EventAction *m_hist;
+    my_iter_t &chain_iter;
 };

@@ -25,6 +25,8 @@
 #include "Randomize.hh"
 #include "time.h"
 #include <thread>
+#include <mutex>
+#include <chain_helper.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -39,10 +41,6 @@ int main(int argc, char **argv)
   CLHEP::HepRandom::setTheSeed(seed);
 
   G4UIExecutive *ui = 0;
-  if (argc == 1)
-  {
-    ui = new G4UIExecutive(argc, argv);
-  }
 
 #ifdef G4MULTITHREADED
   G4MTRunManager *runManager = new G4MTRunManager;
@@ -53,46 +51,24 @@ int main(int argc, char **argv)
 
   runManager->SetUserInitialization(new DetectorConstruction());
   auto physicsList = new QBBC;
-  // G4VModularPhysicsList *physicsList = new G4VModularPhysicsList;
-  // physicsList->RegisterPhysics( new G4HadronElasticPhysics() );
-  // physicsList->RegisterPhysics( new G4StoppingPhysics() );
-  // physicsList->RegisterPhysics( new G4IonPhysics());
-  // physicsList->RegisterPhysics( new G4EmStandardPhysics() );
-  // physicsList->RegisterPhysics( new G4EmExtraPhysics() );
-  // physicsList->DumpCutValuesTable();
   physicsList->SetVerboseLevel(2);
   runManager->SetUserInitialization(physicsList);
   // User action initialization
-  runManager->SetUserInitialization(new ActionInitialization());
-
-  // Initialize visualization
-  //
-  G4VisManager *visManager = new G4VisExecutive;
-  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  // G4VisManager* visManager = new G4VisExecutive("Quiet");
-  visManager->Initialize();
-
+  root_chain<int, int[100], int[100], double[100][4], double[100][4], TObjString>
+      chain("/home/yan/neutrino/generated/flat/G00_00b_00_000@flat@Nu/Filelist.list", "gRooTracker", {"StdHepN", "StdHepPdg", "StdHepStatus", "StdHepP4", "EvtVtx", "EvtCode"});
+  auto iter = chain.begin();
+  runManager->SetUserInitialization(new ActionInitialization(iter));
+  const auto max_hard = 50000;
+  auto max = chain.get_up() > max_hard ? max_hard : chain.get_up();
+  // auto max = chain.get_up();
   // Get the pointer to the User Interface manager
   G4UImanager *UImanager = G4UImanager::GetUIpointer();
+  // batch mode
+  G4String command = "/run/beamOn ";
+  // G4String fileName = argv[1];
+  UImanager->ApplyCommand("/run/initialize");
+  UImanager->ApplyCommand(command + std::to_string(max));
 
-  // Process macro or start UI session
-  //
-  if (!ui)
-  {
-    // batch mode
-    G4String command = "/control/execute ";
-    G4String fileName = argv[1];
-    UImanager->ApplyCommand(command + fileName);
-  }
-  else
-  {
-    // interactive mode
-    UImanager->ApplyCommand("/control/execute init_vis.mac");
-    ui->SessionStart();
-    delete ui;
-  }
-
-  delete visManager;
   delete runManager;
 }
 

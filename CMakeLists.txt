@@ -1,7 +1,7 @@
 
 #----------------------------------------------------------------------------
 # Setup the project
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 project(pinlxr)
 add_subdirectory(analysis)
 
@@ -17,14 +17,22 @@ else()
   find_package(Geant4 REQUIRED)
 endif()
 
+
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include 
                     ${Geant4_INCLUDE_DIR})
 
+find_package(ROOT REQUIRED Spectrum)
+
+include("${ROOT_USE_FILE}")
+
+include_directories(${PROJECT_SOURCE_DIR}/include 
+                    ${ROOT_INCLUDE_DIRS})
+
 
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 add_executable(protoninlxr protoninlxr.cc ${sources} ${headers})
-target_link_libraries(protoninlxr ${Geant4_LIBRARIES})
+target_link_libraries(protoninlxr ${Geant4_LIBRARIES} ${ROOT_LIBRARIES})
 
 
 
